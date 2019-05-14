@@ -1,0 +1,63 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{a4paper}
+
+\title{Cold Case File: The Vanishing Denominator}
+\author{ Eugene L Wachspress}
+\date {May, 2019}
+\begin{document}
+\maketitle
+
+\abstract{Rational barycentric coordinates were proposed for convex polygons and ``well-set'' rational algebraic elements fifty years ago [1].  The denominator polynomials, designated as ``adjoints'', for the polygons were positive over the elements, an essential property for the proposed coordinates to be valid.  It was conjectured that the adjoints for elements with curved sides were also positive.  A plausibility argument was presented and no counter-example has been encountered during the past fifty years.  A polycon has only linear and conic sides.  It is proved here that the adjoint of any well-set polycon is positive within the element.}
+\par
+\par
+\title{1. Notation and definitions (Fig. 1.)}
+\par
+A planar algebraic curve is denoted by a bold face capital (e.g., $\bf{C}$.)  The polynomial with only simple components that vanishes on this curve is denoted in regular font (e.g., C).
+An n-con is a region bounded by a closed curve $\bf{\Gamma}$ having n sides.  Each side $\bf{S}_i$ is a segment of a line or conic for i  = 1, 2,...,n.  The index i is mod n.  Vertex i is the intersection of $\bf{S}_{i-1}$ and $\bf{S}_i$.  The vertices are ordered counter-clockwise around the n-con.  Curve $\bf{C}_i$ is the full curve of which $\bf{S}_i$ is a segment.  An n-con is well-set if $\bf{C}_i$ has no point other than $\bf{S}_i$ in the n-con. The order m of an n-con is the sum of the orders of $\bf{C}_i$.  If there are s lines and r conics, the order m = s + 2r.  The $\bf{C}_i$ are the n components of the curve $\bf{B}$ of order m.  This curve has multiplicity $m_p$ at point p.  It was demonstrated in [1] that there is a unique curve $\bf{Q}$ of order m-3 having multiplicity $m_p - 1$ at all non-vertex points p of $\bf{B}$.  Multiplicities of order greater than two are resolved by algebraic geometry ``divisor'' theory.  A point of multiplicity r imposes .5r(r-1) conditions on $\bf{Q}$, denoted as the adjoint curve of the n-con.   An open composite of side curves is called a chain.  It is known that all convex polygons have adjoints that are positive within the element [1 (5.3), 2, 3].  
+\par
+\title{2.  The n-con reduction algorithm}
+\par
+It has been conjectured that a well-set n-con has an adjoint that is positive over the element [1, 2, 3].  The element then has a set of rational barycentric coordinates and is said to be ``regular''.  No counter-example has been encountered during the past forty-five years.  The conditions defining $\bf{Q}$ exhaust all intersections of $\bf{Q}$ with the element boundary curve $\bf{B}$. Thus, any negative region for Q within the element must be enclosed by a loop.   A well-set element of order five has a conic adjoint with exterior points and so Q must be positive within the element.  The minimum order of any counter-example must be greater than five.  Let CAN be a candidate for a counter-example of minimum order, say s.  A basic reduction algorithm may be used in an attempt to demonstrate that there is a well-set element of order less than s which is also a counter-example.  All linear and quadratic forms that vanish on element 
+boundary components are normalized to be positive within their elements.
+
+A reduction theorem [1, 2, 3] relates adjoints of three elements defined by three P-chains and one or two common S-sides.  (Fig. 2)    Element I is a well-set CAN with  bounding curve $\bf{B}_I = \bf{P}_1\bf{P}_3\bf{S}_1\bf{S}_2$.  Element II appended to I has boundary $\bf{B}_{II} = \bf{P}_3\bf{P}_2\bf{S}_1\bf{S}_2$.  Element III is the well-set union of I and II with $\bf{P}_3$ removed: $\bf{B}_{III} = \bf{P}_1\bf{P}_2\bf{S}_1\bf{S}_2$.   The $\bf{S}$ components are either unity or linear or conic, depending on whether or not extensions of the ends of chain $\bf{P}_1$ are chosen as components of $\bf{B}_{II}$  The chains are chosen so that the order of Element III is either less than that of Element I or the same as I with at least one linear side. Thus, III must have a positive Q.  A basic polynomial relationship is that there are positive a and b such that
+\begin{equation}
+P_2 Q_I = a P_1Q_{II} + b P_3Q_{III}.
+\end{equation}
+The second term on the right-hand side is positive within I.  The P factors are normalized to be positive within I. Thus, $Q_I$ is positive where $Q_{II}$ is positive.  When $Q_{II}$ is not positive the right-hand side becomes negative only where the first term overwhelms the positive second term.  However, the positive region of $Q_I$ is inviolate.  Several regions II may be selected.  (Fig. 3)
+If the union of the resulting positive regions for $Q_I$ is all of I, then I is regular.  The early work established that CAN must contain only convex conic sides (Fig. 4).  It did not yield proof of regularity for all well-set elements with only convex conic sides.  The elimination of linear sides and of concave conic sides having only linear adjacent sides required only the eliminated side as $\bf{P}_3$.  For these reductions n-con II was well-set.  Some candidates with adjacent concave conic sides were reduced with $\bf{P_3}$ including a product of adjacent conics and II not well-set.
+\par
+\title{3. Well-set n-cons having only conic sides}
+\par
+A convex n-con consisting of three conic sides is of order m = 6.  It will be shown here that the adjoint of this n-con is positive within the n-con.  Since the candidate for n-con of least order
+for which the conjecture is not true has only conic sides, it follows that future candidates must be of order not less than eight.  The reduction algorithm may be used on any specific element but a general proof with this approach has been elusive.  In the projective plane all conics may be taken as ellipses.  The adjoint of any 3-con is cubic.  Since the adjoint can be normalized to be positive on the element boundary, any counter-example must contain an inner loop on which the adjoint vanishes.  If an outer loop can be demonstrated, there can be no such inner loop.  This follows from the fact that a cubic can have only one loop.  Several cases must be considered.  These depend on the number of real boundary multiple points.  Points of multiplicity greater than two may be resolved by the usual theory of divisors.  For example, if two boundary sides have a common tangent at an eip then the tangent of the adjoint ring at that eip is the same as that of the intersecting conics.  
+In Fig. 5, for all cases there is an exterior adjoint loop.  If there were an interior loop any line throught that loop would intersect the adjoint curve in four points, which is not possible.  Any well-set 3-con is regular. 
+\par
+A general discussion of the adjoint structure for convex n-cons with only conic sides follows:
+The real elements in the divisor of each side of a convex n-con with the other sides is of order not less than 2(n-1).  Two of these elements are n-con vertices and a ring through these vertices is given an index of i = 0.  We may trace a counter-clockwise path from vertex k+1 along curve $\bf{C_k}$ .  At each eip between sides k and k' > k at which the path proceeds away from the n-con the i index is increased.  At a double point it is increased by 1.  At a multiple point of order r it is common to i indices increased by 1 through r-1.  We trace a path clockwise along curve $\bf{C_k}$ from vertex k (with i = 0) following the same rule.  Each side intersects each of the other n-1 sides in at least two real points.  When there are four real intersections of two sides the indexing is more complicated.  One simple procedure is to increase the index only at the intersections of the two sides first reached on the cw and ccw paths.  At the other two intersections set the index equal to the previous one (instead of increasing it.) An eip on a path leading away from the n-con on the cw path leads toward the n-con on the ccw path and vice versa.  All the eip between $\bf{C_k}$ and $\bf{C_{k'}}$ on $\bf{C_k}$ are thus addressed.  Each continuous component of the n-con adjoint curve intersects the extended n-con boundary sides $\bf{B}$ only at these eip (with appropriate multiplicities).  This is possible only when all points of index i lie on an i-ring (Fig. 6) .  There are at least 2n-4 eip on each side.  There must be n-2 convex rings circling the n-con.  These rings may cross or meet tangentially.  Behavior at n-con extended boundary points with divisors of order greater than two is resolved by the usual quadratic transformations.  The divisor of any line through the element and these rings is of order 2n - 4 = m - 4.  An inner adjoint loop would increase this to m - 2.  The  order of the divisor of a line with a curve of order m-3 is m - 3.   The n-con adjoint polynomial cannot vanish within the n-con.   The n-con test element 7 in MATLAB program poly2018 (displayed in GitHub site genepol/barycentric) has four conic sides.  Side 4 is concave.  The negative coefficient of the y-term was changed to be positive, yielding a convex 4-con of order 8.  The computed adjoint is displayed in Fig. 7.  It contains two convex loops circling the element as predicted. 
+Sides i and i+2 do not always intersect at an eip on ring 1 as shown in Figs. 6 and 7.  More complex intersections are shown in Fig. 8.  The n - 2 rings persist. The reduction algorithm eliminates all concave conic sides and linear sides from any candidate for lowest order counter-example.  The n-2 encircling loops eliminates the remaining n-cons having only convex conic sides. 
+\par 
+The conjecture that the adjoint polynomial of any well-set n-con does not vanish over the element is now a theorem.  Any well-set n-con has bounded rational barycentric coordinates.
+Numerical studies support this theory.  A rigorous mathematical proof combining the reduction algorithm development and its application along with the loop analysis would be welcome.  Treatment of well-set elements with higher order rational algebraic sides may also be attempted.  A concise analysis of a new simplified construction of barycentric coordinates for well-set polycons is given in [4]. 
+This analysis and MATLAB programs are also given in GitHub site genepol/barycentric.
+\par
+\title {4. References}
+\par
+1. E. Wachspress, A Rational Finite Basis, Academic Press, 1975
+
+2. E. Wachspress, The case of the vanishing denominator, Math Model. I 395-399 (1980)
+
+3. E. Wachspress, Rational Bases and Generalized Barycentrics, Springer (2016)
+
+4. E. Wachspress, Barycentric coordinates for polycons, J. Biostatic Biometric App 3(3) 308-318 (2018)
+\par
+Meadow Lakes, East Windsor, New Jersey
+\par
+genewac@cs.com
+
+
+\enddocument
