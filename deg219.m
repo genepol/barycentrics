@@ -1,5 +1,5 @@
 %deg219 follows poly2018 with computation of degree two basis functions.
-syms x y
+syms x y adj14 adj12 adj34
 si14 = zeros(2,n);
 si34 = zeros(2,n);
 si12 = zeros(2,n);
@@ -135,28 +135,30 @@ end
         end
 %All side nodes have been found.
 %We now compute the adjacent factor for all side nodes.
-            adj12(k) = 1.0;
-            adj14(k) = 1.0;
-            adj34(k) = 1.0;
+    if degsi(k) == 1
+        adj12(k) = 1;
+        adj14(k) = 1;
+        adj34(k) = 1;
+    end        
             if degsi(k) == 2
 x1 = si14(1,k); y1 = si14(2,k); x2 = si34(1,k); y2 = si34(2,k);
 c1 = y1-y2; c2 = x2-x1; c3 = x1*y2 - y1*x2; 
 c4 = c1*si12(1,k)+c2*si12(2,k) + c3;
 d1 = c1/c4; d2 = c2/c4; d3 = c3/c4;
 adj12(k) = d3 + d1*x + d2*y;
-adj12(k) = vpa(adj12(k),6);
+adj12(k) = vpa(adj12(k));
 	x1 = si12(1,k); y1 = si12(2,k); x2 = si34(1,k); y2 = si34(2,k);
 c1 = y1-y2; c2 = x2-x1; c3 = x1*y2 -y1*x2; 
 c4 = c1*si14(1,k) + c2*si14(2,k) + c3;
 d1 = c1/c4; d2 = c2/c4; d3 = c3/c4;
 adj14(k) = d3 + d1*x + d2*y;
-adj14(k) = vpa(adj14(k),6);
+adj14(k) = vpa(adj14(k));
 	x2 = si12(1,k); y2 = si12(2,k); x1 = si14(1,k); y1 = si14(2,k);
 c1 = y1-y2; c2 = x2-x1; c3 = x1*y2 - y1*x2; 
 c4 = c1*si34(1,k)+c2*si34(2,k) + c3;
 d1 = c1/c4; d2 = c2/c4; d3 = c3/c4;
 adj34(k) = d3 + d1*x + d2*y;
-adj34(k) = vpa(adj34(k),6);
+adj34(k) = vpa(adj34(k));
             end
                 end
 %We now compute the adjacent factor for vertex nodes.
@@ -178,7 +180,7 @@ c1 = y1-y2; c2 = x2-x1; c3 = x1*y2 -y1*x2;
 c4 = c1*vert(1,k) + c2*vert(2,k) + c3;
 d1 = c1/c4; d2 = c2/c4; d3 = c3/c4;
 va = d3 + d1*x + d2*y;
-vadj2(k) = vpa(va,6);
+vadj2(k) = vpa(va);
    elseif degsi(k) == 1 & degsi(km1) == 2
 %side k is linear but side km1 is conic.
 %We locate five points on the adjacent conic
@@ -193,8 +195,8 @@ cmat(m+1,:) = [1 nod(1,m) nod(2,m) nod(1,m)^2 nod(1,m)*nod(2,m) nod(2,m)^2];
 m = 5;
 		if eip(1,3*(k-1)+1) == 1
 cmat(m+1,:) = [1 nod(1,m) nod(2,m) nod(1,m)^2 nod(1,m)*nod(2,m) nod(2,m)^2];
-		else
-cmat(m+1,:) = [0 0 0 nod(1,m)^2 nod(1,m)*nod(2,m) nod(2,m)^2];
+        else
+cmat(m+1,:) = [0 0 0 nod(2,m)^2 nod(1,m)*nod(2,m) nod(1,m)^2];
         end
 vad = cmat\rhs;
 nc = norm(vad,1);
@@ -204,7 +206,7 @@ if abs(vad(km)) < 1e-5*nc
 end
 	end
 va = vad(1) + vad(2)*x + vad(3)*y + vad(4)*x^2 + vad(5)*x*y + vad(6)*y^2;
-vadj2(k) = vpa(va,6);
+vadj2(k) = vpa(va);
   elseif degsi(km1) == 1 & degsi(k) == 2
 %side km1 is linear but side k is conic
 %We locate five points on the adjacent conic
@@ -216,12 +218,12 @@ cmat(1,:) = [1 nrm(1) nrm(2) nrm(1)^2 nrm(1)*nrm(2) nrm(2)^2];
 	for m = 1:4
 cmat(m+1,:) = [1 nod(1,m) nod(2,m) nod(1,m)^2 nod(1,m)*nod(2,m) nod(2,m)^2];
 	end
-m=5;
+m = 5;
 		if eip(1,3*(k-1)+1) == 1
 cmat(m+1,:) = [1 nod(1,m) nod(2,m) nod(1,m)^2 nod(1,m)*nod(2,m) nod(2,m)^2];
-		else
-cmat(m+1,:) = [0 0 0 nod(1,m)^2 nod(1,m)*nod(2,m) nod(2,m)^2];
-		end
+        else
+cmat(m+1,:) = [0 0 0 nod(2,m)^2 nod(1,m)*nod(2,m) nod(1,m)^2];                
+        end
 vad = cmat\rhs;
 nc = norm(vad,1);
 	for km = 1:m+1
@@ -230,80 +232,89 @@ if abs(vad(km)) < 1e-5*nc
 end
 	end
 va = vad(1) + vad(2)*x + vad(3)*y + vad(4)*x^2 + vad(5)*x*y + vad(6)*y^2;
-vadj2(k) = vpa(va,6);
+vadj2(k) = vpa(va);
    else
 %Both sixy are conic and we locate nine points for a cubic adjacent factor.
-noc = [si12(:,k) si14(:,k) si34(:,k) si14(:,km1) si12(:,km1) si34(:,km1) eip(2:3,3*(k-1)+1:3*(k-1)+3)];
-nrm = vert(:,k); % This is the normalization node.
 cumat = zeros(10);
-rhs = [1;0;0;0;0;0;0;0;0;0];
-xc = nrm(1); yc = nrm(2);
+rhs  = [1;0;0;0;0;0;0;0;0;0];
+xc = vert(1,k); yc = vert(2,k);
+% This is the normalization node.
 cum = [1 xc yc xc^2 xc*yc yc^2];
 cump = [xc^3 xc^2*yc xc*yc^2 yc^3];
 cumat(1,:) = [cum cump];
-	for m = 2:7
-xc = noc(1,m-1); yc = noc(2,m-1);
+xc = si12(1,k); yc = si12(2,k);
 cum = [1 xc yc xc^2 xc*yc yc^2];
 cump = [xc^3 xc^2*yc xc*yc^2 yc^3];
-cumat(m,:) = [cum cump];
-	end
-m = 8;
-xc = noc(1,m-1); yc = noc(2,m-1); wc = eip(1,3*(k-1)+1);
+cumat(2,:) = [cum cump];
+xc = si14(1,k); yc = si14(2,k);
+cum = [1 xc yc xc^2 xc*yc yc^2];
+cump = [xc^3 xc^2*yc xc*yc^2 yc^3];
+cumat(3,:) = [cum cump];
+xc = si34(1,k); yc = si34(2,k);
+cum = [1 xc yc xc^2 xc*yc yc^2];
+cump = [xc^3 xc^2*yc xc*yc^2 yc^3];
+cumat(4,:) = [cum cump];
+xc = si12(1,km1); yc = si12(2,km1);
+cum = [1 xc yc xc^2 xc*yc yc^2];
+cump = [xc^3 xc^2*yc xc*yc^2 yc^3];
+cumat(5,:) = [cum cump];
+xc = si14(1,km1); yc = si14(2,km1);
+cum = [1 xc yc xc^2 xc*yc yc^2];
+cump = [xc^3 xc^2*yc xc*yc^2 yc^3];
+cumat(6,:) = [cum cump];
+xc = si34(1,km1); yc = si34(2,km1);
+cum = [1 xc yc xc^2 xc*yc yc^2];
+cump = [xc^3 xc^2*yc xc*yc^2 yc^3];
+cumat(7,:) = [cum cump];
+xc = eip(2,3*(k-1)+1); yc = eip(3,3*(k-1)+1); wc = eip(1,3*(k-1)+1);
+cum = [1 xc yc xc^2 xc*yc yc^2];
 cum = [1 xc yc xc^2 xc*yc yc^2];
 cump = [xc^3 xc^2*yc xc*yc^2 yc^3];
 	if wc == 1
-cumat(m,:) = [cum cump];
+cumat(8,:) = [cum cump];
 	else
-cumat(m,:) = [0 0 0 0 0 0 cump];
+cumat(8,:) = [0 0 0 0 0 0 cump];
 	end
-m = 9;
-xcp = noc(1,m-1); ycp = noc(2,m-1);wcp = eip(1,3*(k-1)+2);
-we = eip(1,3*(k-1)+3); xe = eip(2,3*(k-1)+3); ye = eip(3,3*(k-1)+3);
-	if norm([xc-xcp yc-ycp wc-wcp],1) ~= 0
-cum = [1 xcp ycp xcp^2 xcp*ycp ycp^2];
-cump = [xcp^3 xcp^2*ycp xcp*ycp^2 ycp^3];
-		if wcp == 1
-cumat(m,:) = [cum cump];
+wc = eip(1,3*(k-1)+2); xc = eip(2,3*(k-1)+2); yc = eip(3,3*(k-1)+2);
+cum = [1 xc yc xc^2 xc*yc yc^2];
+cump = [xc^3 xc^2*yc xc*yc^2 yc^3];
+		if wc == 1
+cumat(9,:) = [cum cump];
 		else
-cumat(m,:) = [0 0 0 0 0 0 cump];
-		end
-	else
-%The adjoint must be tangent to the side curves at this eip
-%since the side curves have a common tangent here.
-    ns = diff(sixy(k),x);
-    nsp = subs(ns, {'x' 'y'} , {xcp ycp}); 
-    ds = diff(sixy(k),y);
-    dsp = subs(ds, {'x' 'y'} , {xcp ycp}); 
-cumat(9,:) = double(dsp*[0 wcp 0 2*xcp*wcp wcp*ycp 0 3*xcp^2 2*xcp*ycp ycp^2 0] - nsp*[0 0 wcp 0 wcp*xcp 2*wcp*ycp 0 xcp^2 2*xcp*ycp 3*ycp^2]);
-	cum = [1 xe ye xe^2 xe*ye ye^2];
-cump = [xe^3 xe^2*ye xe*ye^2 ye^3];
-		if we == 1
-cumat(10,:) = [cum cump];
-		else
-cumat(10,:) = [0 0 0 0 0 0 cump]
-		end
-	end
-	if norm([xc-xcp yc-ycp wc-wcp],1) ~= 0
-m = 10;
-			if norm([xe-xc ye-yc we-wc],1) ~= 0 & norm([xe-xcp ye-ycp we-wcp],1) ~= 0
-cum = [1 xe ye xe^2 xe*ye ye^2];
-cump = [xe^3 xe^2*ye xe*ye^2 ye^3];
-		if we == 1
+cumat(9,:) = [0 0 0 0 0 0 cump];
+        end
+xc = eip(2,3*(k-1)+3); yc = eip(3,3*(k-1)+3);wc = eip(1,3*(k-1)+3);
+cum = [1 xc yc xc^2 xc*yc yc^2];
+cump = [xc^3 xc^2*yc xc*yc^2 yc^3];
+		if wc == 1
 cumat(10,:) = [cum cump];
 		else
 cumat(10,:) = [0 0 0 0 0 0 cump];
-		end
-			else
-%The adjoint must be tangent to the side curves at this eip
+        end
+        if norm(cumat(8,:) - cumat(9,:)) < 1e-6 | norm(cumat(10,:) - cumat(9,:)) < 1e-6          
+%The adjoint must be tangent to the side curves at the double eip
 %since the side curves have a common tangent here.
+wc = eip(1,3*(k-1)+2); xc = eip(2,3*(k-1)+2); yc = eip(3,3*(k-1)+2);
     ns = diff(sixy(k),x);
-    nse = subs(ns, {'x' 'y'} , {xe ye}); 
+    nsp = subs(ns, {'x' 'y'} , {xc yc}); 
     ds = diff(sixy(k),y);
-    dse = subs(ds, {'x' 'y'} , {xe ye}); 
-cumat(9,:) = dse*[0 we 0 2*xe*we we*ye 0 3*xe^2 2*xe*ye ye^2 0] - nse*[0 0 we 0 we*xe 2*we*ye 0 xe^2 2*xe*ye 3*ye^2];
-cumat(10,:) = dse*[0 we 2*xe*we we*ye 0 3*xe^2 2*xe*ye 2*xe*ye ye^2 0] - nse*[0 0 we 0 we*xe 2*we*ye 0 xe^2 2*xe*ye 3*ye^2];
-			end
-	end
+    dsp = subs(ds, {'x' 'y'} , {xc yc}); 
+cumat(9,:) = double(dsp*[0 wc 0 2*xc*wc wc*yc 0 3*xc^2 2*xc*yc yc^2 0] - nsp*[0 0 wc 0 wc*xc 2*wc*yc 0 xc^2 2*xc*yc 3*yc^2]);
+        elseif norm(cumat(10,:) - cumat(8,:)) < 1e-6
+wc = eip(1,3*(k-1)+3); xc = eip(2,3*(k-1)+3); yc = eip(3,3*(k-1)+3);
+    ns = diff(sixy(k),x);
+    nsp = subs(ns, {'x' 'y'} , {xc yc}); 
+    ds = diff(sixy(k),y);
+    dsp = subs(ds, {'x' 'y'} , {xc yc}); 
+cumat(10,:) = double(dsp*[0 wc 0 2*xc*wc wc*yc 0 3*xc^2 2*xc*yc yc^2 0] - nsp*[0 0 wc 0 wc*xc 2*wc*yc 0 xc^2 2*xc*yc 3*yc^2]);
+        end        
+        if cumat(9,:) == conj(cumat(8,:))
+            cumat(8,:) = imag(cumat(9,:));
+            cumat(9,:) = real(cumat(9,:));
+        elseif cumat(9,:) == conj(cumat(10,:))
+            cumat(10,:) = imag(cumat(9,:));
+            cumat(9,:) = real(cumat(9,:));
+        end
 vad = cumat\rhs;
 nc = norm(vad,1);
 	for km = 1:10
@@ -312,7 +323,7 @@ if abs(vad(km)) < 1e-5*nc
 end
     end
 va = [1 x y x^2 x*y y^2 x^3 x^2*y x*y^2 y^3]*vad;
-vadj2(k) = vpa(va,6);
+vadj2(k) = vpa(va);
    end % On types of sixy at k
                             end % On k-loop for vertices
 %The degree two basis functions are now computed.                            
@@ -346,30 +357,37 @@ for k = 1:n
     w2vert(k) = vadj2(k)*w2vert(k);
 %The vertex numerators are w2vert.    
     nv = subs(w2vert(k), {'x' 'y'}, {vert(1,k) vert(2,k)});
-    dv = subs(Q , {'x' 'y'}, {vert(1,k) vert(2,k)});
+    dv = subs(Q1 , {'x' 'y'}, {vert(1,k) vert(2,k)});
     numW2(k) = dv*w2vert(k)/nv;
-    W2v(k) = numW2(k)/Q;
+    W2v(k) = numW2(k)/Q1;
     ns = subs(w212(k), {'x' 'y'} , {si12(1,k) si12(2,k)});
-    ds = subs(Q , {'x' 'y'}, {si12(1,k) si12(2,k)});
+    ds = subs(Q1 , {'x' 'y'}, {si12(1,k) si12(2,k)});
     num12(k) = ds*w212(k)/ns;
-    W212(k) = num12(k)/Q;;
-    if degsi(k) == 2
+    W212(k) = num12(k)/Q1;;
+    if degsi(k) == 1
+        W214(k) = 0;
+        W234(k) = 0;
+    else
     ns = subs(w214(k), {'x' 'y'} , {si14(1,k) si14(2,k)});
-    ds = subs(Q , {'x' 'y'}, {si14(1,k) si14(2,k)});
+    ds = subs(Q1 , {'x' 'y'}, {si14(1,k) si14(2,k)});
     num14(k) = ds*w214(k)/ns;
-    W214(k) = num14(k)/Q;;
+    W214(k) = num14(k)/Q1;;
     ns = subs(w234(k), {'x' 'y'} , {si34(1,k) si34(2,k)});
-    ds = subs(Q , {'x' 'y'}, {si14(1,k) si34(2,k)});
+    ds = subs(Q1 , {'x' 'y'}, {si34(1,k) si34(2,k)});
     num34(k) = ds*w234(k)/ns;
-    W234(k) = num34(k)/Q;;
+    W234(k) = num34(k)/Q1;
     end
 end
 % Num are numerators and W2 are degree 2 basis functions:
 %W2v(k) are vertices and W214(k),W212(k) and W234(k) are side node bases on side k.
 for k = 1:n
-    W2v(k) = vpa(W2v(k),6);
-    W214(k) = vpa(W214(k),6);
-    W212(k) = vpa(W212(k),6);
-    W234(k) = vpa(W234(k),6);
+    W2v(k) = vpa(W2v(k));
+    W214(k) = vpa(W214(k));
+    W212(k) = vpa(W212(k));
+    W234(k) = vpa(W234(k));
 end
+W2v = W2v(1:n);
+W214 = W214(1:n);
+W212 = W212(1:n);
+W234 = W234(1:n);
 return
